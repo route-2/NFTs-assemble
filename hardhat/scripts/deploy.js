@@ -1,6 +1,6 @@
 const { ethers } = require("hardhat");
 require("dotenv").config({ path: ".env" });
-const { WHITELIST_CONTRACT_ADDRESS, METADATA_URL } = require("../constants");
+const { WHITELIST_CONTRACT_ADDRESS, METADATA_URL } = require("../constants/index");
 
 
 async function main() {
@@ -21,10 +21,11 @@ async function main() {
 
   console.log("Devs contract deployed to:", deployedCryptoDevsContract.address);
 
-  main()
-  .then(() => process.exit(0))
-  .catch((error) => {
-    console.error(error);
-    process.exit(1);
-  });
+
 }
+
+main().then(() => process.exit(0))
+.catch((error) => {
+  console.error(error);
+  process.exit(1);
+});
