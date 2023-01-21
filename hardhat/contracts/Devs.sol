@@ -27,5 +27,63 @@ contract Devs is ERC721Enumerable,Ownable {
     bool public presaleStarted;
     uint256 public presaleEnded;
 
-    
+    modifier onlyWhenNotPaused {
+        require (!_paused, "Contract is paused");
+        _;
+    }
+
+    constructor(string memory baseURI, address whitelistContract ) ERC721("Devs", "Devs") {
+       _baseTokenURI = baseURI;
+       whitelist = IWhitelist(whitelistContract);
+    }
+
+    function startPresale() public onlyOwner {
+        presaleStarted = true;
+
+        presaleEnded = block.timestamp + 5 minutes;
+
+    }
+
+    function presaleMint() public payable onlyWhenNotPaused {
+        require(presaleStarted && block.timestamp < presaleEnded , "presale is not running");
+        require(msg.value >= _price, "Not enough ETH");
+        require(whitelist.whitelistedAddresses(msg.sender), "you are not whitelisted");
+        require(tokenIds < _maxMint, "all tokens are minted");
+        tokenIds += 1;
+        _safeMint(msg.sender, tokenIds);
+
+    }
+
+    function mint() public payable onlyWhenNotPaused {
+         require(msg.value >= _price, "Not enough ETH");
+          require(tokenIds < _maxMint, "all tokens are minted");
+            require(presaleStarted && block.timestamp < presaleEnded , "presale is not running");
+            tokenIds += 1;
+            _safeMint(msg.sender, tokenIds);
+        
+    }
+    /** 
+    * @dev _baseURI overides the Openzeppelin's ERC721 implementation which by default
+    * returned an empty string for the baseURI
+    */
+    function _baseURI() internal view virtual override returns (string memory) {
+        return _baseTokenURI;
+    }
+      function setPaused(bool val) public onlyOwner {
+        _paused = val;
+    }
+
+     function withdraw() public onlyOwner  {
+        address _owner = owner();
+        uint256 amount = address(this).balance;
+        (bool sent, ) =  _owner.call{value: amount}("");
+        require(sent, "Failed to send Ether");
+    }
+     receive() external payable {}
+
+    // Fallback function is called when msg.data is not empty
+    fallback() external payable {}
+
+
+
 }
