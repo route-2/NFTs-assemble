@@ -143,7 +143,7 @@ else{
         const contract = new Contract(NFT_CONTRACT_ADDRESS, abi, provider);
         const _owner = await contract.owner();
         const signer = await getProviderOrSigner(true);
-        const signerAddress = await signer.getAddress();
+        const address = await signer.getAddress();
         if(address.toLowerCase() === _owner.toLowerCase())
         {
 
@@ -308,7 +308,7 @@ else{
           {renderButton()}
         </div>
         <div>
-          <img className={styles.image} src="./cryptodevs/0.svg" />
+          <img className={styles.image} src="https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/why.svg" />
         </div>
       </div>
 
@@ -320,4 +320,4 @@ else{
 
     </>
   )
-}
+} 
