@@ -7,7 +7,7 @@ import styles from "../styles/Home.module.css";
 
 export default function Home() {
   const[walletConnected,setwalletConnected] = useState(false)
-  const[presaleStarted,setpresaleStarted] = useState(false)
+  const[presaleStarted,setpresaleStarted] = useState(true)
   const[presaleEnded,setpresaleEnded] = useState(false)
   const[loading,setLoading] = useState(false)
   const[isOwner,setisOwnder] = useState(false)
