@@ -193,17 +193,26 @@ else{
     };
 
     useEffect(() => {
-      web3modalRef.current = new Web3Modal({
+
+      if(!walletConnected)
+
+      {
+web3modalRef.current = new Web3Modal({
         network: "goerli",
         cacheProvider: true,
       });
-
-      
-      
+      connectWallet()
       const _presaleStarted = checkIfpresaleStarted();
       if (_presaleStarted) {
         checkIfpresaleEnded();
+
       }
+      
+
+      
+      
+      
+      
 
       getTokenIdMinted();
 
@@ -223,8 +232,10 @@ else{
         await getTokenIdMinted();
       }, 5 * 1000);
 
-
+    }
     },[walletConnected])
+
+    
   
     const renderButton = () => {
       // If wallet is not connected, return a button which allows them to connect their wllet
